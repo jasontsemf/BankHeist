@@ -12,7 +12,7 @@ const SerialPort = require('serialport');
 let port;
 let aPorts = [];
 
-let localhostPort = 8080;
+let localhostPort = 8081;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -93,8 +93,9 @@ e.get("/move/:xy", async (req, res) => {
   console.log(temp);
   x = temp[0];
   y = temp[1];
+  let fr = 1000/30;
   if (port) {
-    let cmd = `XM,1000,${x},${y}\r`;
+    let cmd = `XM,10,${x},${y}\r`;
     mainWindow.webContents.send('cmdWrite', cmd);
     port.write(cmd, function (err) {
       if (err) {
@@ -122,8 +123,8 @@ scanPort = ()=>{
       }
     });
     console.log(aPorts, "in the function");
-    if (callback) return callback(null, foundPorts);
+    if (callback) return;
   }).catch(function (error) {
-    if (callback) return callback(error);
+    if (callback) return;
   });
 }

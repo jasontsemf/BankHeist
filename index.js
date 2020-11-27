@@ -1,14 +1,39 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const app = express();
 
-const SerialPort = require('serialport');
-const port = new SerialPort('/dev/tty.usbmodem14201');
+const cors = require('cors');
 
+let app = express();
+const PORT = process.env.PORT || 8080;
+const server = app.listen(3000);
+// let socket = require('socket.io');
+// let io = socket(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+    }
+});
+
+app.use(cors());
+app.options('*', cors());
 app.use(express.static('public'));
 app.use(express.json());
 
+io.sockets.on('connection', newConnection);
+
+function newConnection(socket) {
+	console.log('new connection: ' + socket.id);
+	console.log(socket);
+
+	socket.on('mouse', mouseMsg);
+}
+
+function mouseMsg(data) {
+	// socket.broadcast.emit('mouse', data);
+	io.sockets.emit('mouse', data);
+	console.log(data);
+} 
 
 // to static pages
 app.get("/", (req, res) => {
@@ -28,22 +53,27 @@ app.get("/draw", (req, res) => {
 });
 
 
-// actual API calls
-app.get("/move/:xy", async (req, res) => {
-    let temp = req.params.xy.split(',');
-    console.log(temp);
-    x = temp[0];
-    y = temp[1];
-    port.write(`XM,1000,${x},${y}\r`, function (err) {
-        if (err) {
-            return console.log('Error on write: ', err.message)
-        }
-        console.log('message written', x,y);
-    })
-});
+// // actual API calls
+// app.get("/move/:xy", async (req, res) => {
+//     let temp = req.params.xy.split(',');
+//     console.log(temp);
+//     x = temp[0];
+//     y = temp[1];
+//     port.write(`XM,1000,${x},${y}\r`, function (err) {
+//         if (err) {
+//             return console.log('Error on write: ', err.message)
+//         }
+//         console.log('message written', x,y);
+//     })
+// });
 
-app.listen(8080, () => {
+app.listen(PORT, () => {
     console.log("Server listening at http://localhost:8080!")
 });
+
+
+
+
+
 
 
