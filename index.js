@@ -20,6 +20,7 @@ app.options('*', cors());
 app.use(express.static('public'));
 app.use(express.json());
 
+io.listen(PORT+1);
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
