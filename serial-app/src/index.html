@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="index.css">
+    <script defer src="render.js"></script>
+  </head>
+  <body>
+    <h1>💸 BankHeist Serial</h1>
+    <select name="select" id="select"></select>
+    <button id="scan">scan</button>
+    <button id="connect">connect</button>
+    <p>
+      <div id="msg">Awaiting to Connect</div>
+      <div id="ins">Make API calls to http://localhost:8080 to send serial</div>
+    </p>
+    <textarea name="command" id="command" cols="30" rows="10"></textarea>
+    <button id="send">send</button>
+  </body>
+</html>
