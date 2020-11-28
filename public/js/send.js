@@ -26,7 +26,7 @@ function setup() {
 
   // var clearButton = select('#clearButton');
   // clearButton.mousePressed(clearDrawing);
-  socket = io.connect('/');
+  socket = io.connect(':3000');
 }
 
 function mouseDragged() {

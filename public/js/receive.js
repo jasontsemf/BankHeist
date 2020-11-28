@@ -16,7 +16,7 @@ function setup() {
   createCanvas(600, 600);
   background(51);
 
-  socket = io.connect('/');
+  socket = io.connect(':3000');
   socket.on('mouse', dataIncoming);
 }
 
