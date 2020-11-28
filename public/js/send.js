@@ -14,7 +14,6 @@ function setup() {
     millisecond = millis();
   }
   console.log("hello from my sendjs");
-  console.log(socket);
   canvas = createCanvas(600, 600);
 
   canvas.mousePressed(startPath);
@@ -26,7 +25,7 @@ function setup() {
 
   // var clearButton = select('#clearButton');
   // clearButton.mousePressed(clearDrawing);
-  socket = io.connect(':3000');
+  socket = io.connect('/');
 }
 
 function mouseDragged() {
