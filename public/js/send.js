@@ -8,6 +8,7 @@ let prem = 0;
 let diff = 0;
 let minDiff=10000;
 
+
 function setup() {
   if (prem === 0){
     millisecond = millis();
@@ -25,7 +26,7 @@ function setup() {
 
   // var clearButton = select('#clearButton');
   // clearButton.mousePressed(clearDrawing);
-  socket = io.connect('http://localhost:3000');
+  socket = io.connect('/');
 }
 
 function mouseDragged() {
