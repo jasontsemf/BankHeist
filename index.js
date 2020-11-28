@@ -1,26 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-
-const cors = require('cors');
-
-let app = express();
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT);
+const app = express();
+const port = process.env.PORT || 8080;
+const server = app.listen(3000);
 // let socket = require('socket.io');
 // let io = socket(server);
 const io = require('socket.io')(server, {
     cors: {
-        origin: '*',
+      origin: '*',
     }
-});
+  });
 
-app.use(cors());
-app.options('*', cors());
 app.use(express.static('public'));
 app.use(express.json());
 
-io.listen(PORT+1);
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
@@ -68,7 +62,7 @@ app.get("/draw", (req, res) => {
 //     })
 // });
 
-app.listen(PORT, () => {
+app.listen(port, () => {
     console.log("Server listening at http://localhost:8080!")
 });
 

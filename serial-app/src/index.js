@@ -95,7 +95,7 @@ e.get("/move/:xy", async (req, res) => {
   y = temp[1];
   let fr = 1000/30;
   if (port) {
-    let cmd = `XM,10,${x},${y}\r`;
+    let cmd = `XM,100,${x},${y}\r`;
     mainWindow.webContents.send('cmdWrite', cmd);
     port.write(cmd, function (err) {
       if (err) {
