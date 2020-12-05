@@ -73,12 +73,22 @@ ipc.on('connect', (event, arg) => {
 });
 
 ipc.on('sendCmd', (event, arg) => {
-  port.write(`${arg}\r`, function (err) {
-    if (err) {
-      return console.log('Error on write: ', err.message)
-    }
-    console.log('message written', `${arg}\r`);
-  });
+  // port.write(arg, function (err) {
+  //   if (err) {
+  //     return console.log('Error on write: ', err.message)
+  //   }
+  //   console.log('message written', arg);
+  // });
+  console.log("the arg: ", arg);
+  if (port) {
+    mainWindow.webContents.send('cmdWrite', arg);
+    port.write(arg, function (err) {
+      if (err) {
+        return console.log('Error on write: ', err.message)
+      }
+      console.log('message written', arg);
+    });
+  }
 });
 
 //XM,1000,1000,1000

@@ -8,13 +8,12 @@ let prem = 0;
 let diff = 0;
 let minDiff=10000;
 
-
 function setup() {
   if (prem === 0){
     millisecond = millis();
   }
   console.log("hello from my sendjs");
-  canvas = createCanvas(600, 600);
+  canvas = createCanvas(247, 175);
 
   canvas.mousePressed(startPath);
   canvas.parent('canvascontainer');
@@ -22,10 +21,9 @@ function setup() {
 
   // var saveButton = select('#saveButton');
   // saveButton.mousePressed(saveDrawing);
-
   // var clearButton = select('#clearButton');
   // clearButton.mousePressed(clearDrawing);
-  socket = io.connect('/');
+  socket = io.connect();
 }
 
 function mouseDragged() {
@@ -45,7 +43,6 @@ function mouseDragged() {
     y: mouseY
   }
   socket.emit('mouse', data);
-
 }
 
 function startPath() {
