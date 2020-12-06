@@ -1,4 +1,4 @@
-console.log("hello from the signerlogin script");
+console.log("hello from the signer script");
 
 var socket;
 let fullname = "";
@@ -25,6 +25,7 @@ document.querySelector("#joinroom").onclick = () => {
         roomname: roomname
     }
     socket.emit('signer login', data);
+    socket.on('no room', (res) => console.log(res));
     socket.on('get cipher from server', onReceiveCipher);
 };
 
@@ -33,16 +34,9 @@ document.querySelector("#test").onclick = () => {
     socket.emit("test", "hi");
 };
 
-socket.on('enter', onEnter);
-
-function onEnter(data){
-    console.log(data);
-}
-
-socket.on('message', onMsg);
-function onMsg(data){
-    console.log("on message" + data);
-}  
+socket.on('enter', (res) => console.log(res));
+socket.on('no room', (res) => console.log(res));
+socket.on('message', (res) => console.log(res));
 
 function onReceiveCipher(data){
     console.log(data);

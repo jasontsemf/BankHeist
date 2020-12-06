@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const { emit } = require('process');
 const app = express();
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
@@ -20,6 +21,7 @@ let rooms = [];
 
 io.on('connection', socket => {
     console.log(socket.id);
+    // receiver login
     socket.on("receiver login", (data) => {
         console.log("a receiver");
         // console.log(data);
@@ -28,17 +30,18 @@ io.on('connection', socket => {
             email: data.email,
             id: socket.id
         };
+        socket.nickname = user.fullname;
         const room = {
             room: data.roomname,
             cipher: data.cipher
         }
         console.log(user);
-        console.log(room);
+        console.log(rooms);
         users.push(user);
         rooms.push(room);
 
         socket.join(room.room);
-        io.to(room.room).emit('enter', room.room);
+        io.in(room.room).emit('enter', `${user.fullname} has joined ${room.room}`);
         // io.emit("new user", users);
     });
 
@@ -50,37 +53,47 @@ io.on('connection', socket => {
             email: data.email,
             id: socket.id
         };
+        socket.nickname = user.fullname;
         let room = {
             room: data.roomname
         }
-
         console.log(user);
-        // console.log(rooms);
+        console.log(rooms);
+
         let cipher;
         let targetRoomName;
 
-        rooms.forEach(e => {
-            if (e.room === room.room) {
-                targetRoomName = e.room;
-                cipher = e.cipher;
-            }
-        });
-        io.to(socket.id).emit("get cipher from server", cipher);
+        if(rooms.length > 0){
+            rooms.forEach(e => {
+                if (e.room === room.room) {
+                    targetRoomName = e.room;
+                    cipher = e.cipher;
+                    console.log("room exist");
+                    io.to(socket.id).emit("get cipher from server", cipher);
+                }else{
+                    console.log("roon doesn't exist");
+                    io.to(socket.id).emit('no room', "the room you're trying to conenct is not available yet");
+                }
+            });
+        }else{
+            console.log("roon doesn't exist");
+            io.to(socket.id).emit('no room', "the room you're trying to conenct is not available yet");
+        }
+
         socket.on("signer login success", logindata => {
             if (logindata.room === targetRoomName && logindata.cipher === cipher) {
                 users.push(user);
                 socket.join(targetRoomName);
                 console.log(`${user.fullname} joined`);
-                io.to(targetRoomName).emit('enter', targetRoomName);
-                io.sockets.in(targetRoomName).emit('message', 'what is going on, party people?');
+                io.in(targetRoomName).emit('enter', `${user.fullname} has joined ${targetRoomName}`);
+                // io.to(targetRoomName).emit('enter', targetRoomName);
+                // io.sockets.in(targetRoomName).emit('message', 'what is going on, party people?');
+                socket.on('mouse', (data) => {
+                    io.in(targetRoomName).emit('mouse', data);
+                });
             }
         });
     });
-
-    // socket.on("join room", (room, cb) => {
-    //     socket.join(room);
-    //     // cb(messages[roomName]);
-    // })
 });
 
 io.sockets.on('connection', test);
@@ -94,44 +107,53 @@ function outputTest(data){
 }
 
 
-io.sockets.on('connection', newConnection);
+// io.sockets.on('connection', newConnection);
 
-function newConnection(socket) {
-    console.log('new connection: ' + socket.id);
-    console.log(socket);
-    socket.on('mouse', mouseMsg);
-}
+// function newConnection(socket) {
+//     console.log('new connection: ' + socket.id);
+//     console.log(socket);
+//     socket.on('mouse', mouseMsg);
+// }
 
-function mouseMsg(data) {
-    // socket.broadcast.emit('mouse', data);
-    io.sockets.emit('mouse', data);
-    console.log(data);
-}
+// function mouseMsg(data) {
+//     // socket.broadcast.emit('mouse', data);
+//     io.sockets.emit('mouse', data);
+//     console.log(data);
+// }
 
 // to static pages
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-app.get("/sign", (req, res) => {
-    res.sendFile(path.join(__dirname, "public/sign.html"));
+
+app.get("/signer", (req, res) => {
+    res.sendFile(path.join(__dirname, "public/signer.html"));
 });
 
-app.get("/receive", (req, res) => {
-    res.sendFile(path.join(__dirname, "public/receive.html"));
+app.get("/receiver", (req, res) => {
+    res.sendFile(path.join(__dirname, "public/receiver.html"));
 });
 
 app.get("/draw", (req, res) => {
     res.sendFile(path.join(__dirname, "public/draw.html"));
 });
 
-app.get("/signerlogin", (req, res) => {
-    res.sendFile(path.join(__dirname, "public/signerlogin.html"));
-});
+// app.get("/sign", (req, res) => {
+//     res.sendFile(path.join(__dirname, "public/sign.html"));
+// });
 
-app.get("/receiverlogin", (req, res) => {
-    res.sendFile(path.join(__dirname, "public/receiverlogin.html"));
-});
+// app.get("/receive", (req, res) => {
+//     res.sendFile(path.join(__dirname, "public/receive.html"));
+// });
+
+// app.get("/signerlogin", (req, res) => {
+//     res.sendFile(path.join(__dirname, "public/signerlogin.html"));
+// });
+
+// app.get("/receiverlogin", (req, res) => {
+//     res.sendFile(path.join(__dirname, "public/receiverlogin.html"));
+// });
 
 
 // // actual API calls

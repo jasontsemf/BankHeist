@@ -23,7 +23,7 @@ function setup() {
   // saveButton.mousePressed(saveDrawing);
   // var clearButton = select('#clearButton');
   // clearButton.mousePressed(clearDrawing);
-  socket = io.connect();
+  // socket = io.connect();
 }
 
 function mouseDragged() {

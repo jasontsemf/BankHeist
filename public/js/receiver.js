@@ -1,4 +1,4 @@
-console.log("hello from the receiverlogin script");
+console.log("hello from the receiver script");
 
 var socket;
 let fullname = "";
@@ -15,7 +15,7 @@ document.querySelector("#createroom").onclick = () => {
     email = document.querySelector("#email").value;
     roomname = document.querySelector("#roomname").value;
     pw = document.querySelector("#pw").value;
-    console.log(fullname, email, roomname, pw);
+    // console.log(fullname, email, roomname, pw);
     cipher = CryptoJS.AES.encrypt(roomname, pw).toString();
     document.querySelector("#cipher").textContent = cipher;
     data = {
@@ -27,15 +27,9 @@ document.querySelector("#createroom").onclick = () => {
     socket.emit('receiver login', data);
 };
 
-socket.on('enter', onEnter);
-function onEnter(data){
-    console.log(data);
-}
+socket.on('enter', (res) => console.log(res));
 
-socket.on('message', onMsg);
-function onMsg(data){
-    console.log("on message" + data);
-}  
+socket.on('message', (res) => console.log(res));
 
 socket.on("hello", console.log(data));
 

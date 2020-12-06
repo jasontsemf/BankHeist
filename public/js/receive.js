@@ -5,15 +5,21 @@ var yarray = [];
 var youtput = [];
 var start = true;
 
+var drawing = [];
+var currentPath = [];
+
 function setup() {
-  createCanvas(247, 175);
-  background(51);
-  socket = io.connect();
-  socket.on('mouse', dataIncoming);
+  console.log("hello from receive p5 script");
+  canvas = createCanvas(247, 175);
+  canvas.parent('canvascontainer');
+  // socket = io.connect();
+  socket.on('mouse', moveAxiDraw);
+  socket.on('mouse', drawCanvas);
+  background(0);
 }
 
-function dataIncoming(data) {
-  // console.log(data.x, data.y);
+function moveAxiDraw(data) {
+  console.log(data.x, data.y);
 
   xarray.push(data.x);
   let findlastx = xarray[xarray.length - 2];
@@ -43,7 +49,14 @@ function dataIncoming(data) {
   }
 }
 
-function draw() {}
+function draw() {
+}
+
+function drawCanvas(data){
+  
+  fill(255);
+  ellipse(data.x, data.y, 5, 5);
+}
 // let button = document.querySelector("#btn");
 // let x;
 // let y;
