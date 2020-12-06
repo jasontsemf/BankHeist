@@ -66,7 +66,7 @@ socket.on('pendown', (res) => {
       
 
       // move to next start point
-      let writeS = 500;
+      let writeS = 350;
       let writeX = (res.x - xarray[xarray.length - 2]) * factor;
       writeX = Math.floor(writeX);
       let writeY = (res.y - yarray[yarray.length - 2]) * factor;

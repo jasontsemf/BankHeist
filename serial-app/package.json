@@ -1,8 +1,8 @@
 {
   "name": "serial-app",
-  "productName": "serial-app",
+  "productName": "BankHeist Serial",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "This is the serial app for BankHeist",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -19,7 +19,9 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "icon.icns"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
