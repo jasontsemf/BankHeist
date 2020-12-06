@@ -33,7 +33,7 @@ document.querySelector("#ready").onclick = () => {
     // console.log("ready is clicked");
     let ready = true;
     socket.emit('receiver ready', ready);
-    document.querySelector("#canvascontainer").style.display = 'inline-block';
+    document.querySelector("#signingarea").style.display = 'inline-block';
 }
 
 socket.on('enter', (res) => console.log(res));

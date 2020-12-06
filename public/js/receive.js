@@ -66,7 +66,7 @@ socket.on('pendown', (res) => {
       
 
       // move to next start point
-      let writeS = 350;
+      let writeS = 250;
       let writeX = (res.x - xarray[xarray.length - 2]) * factor;
       writeX = Math.floor(writeX);
       let writeY = (res.y - yarray[yarray.length - 2]) * factor;
@@ -93,3 +93,7 @@ function drawCanvas(data) {
   fill(255);
   ellipse(data.x, data.y, 5, 5);
 }
+
+document.querySelector("#clear").onclick = () => {
+  background(0);
+};

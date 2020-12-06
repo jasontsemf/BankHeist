@@ -1,19 +1,19 @@
 var database;
-var socket; 
+var socket;
 
 var drawing = [];
 var currentPath = [];
 var isDrawing = false;
 let prem = 0;
 let diff = 0;
-let minDiff=10000;
+let minDiff = 10000;
 
 function setup() {
-  if (prem === 0){
+  if (prem === 0) {
     millisecond = millis();
   }
   console.log("hello from my signjs");
-  canvas = createCanvas(247*2, 175*2);
+  canvas = createCanvas(247 * 2, 175 * 2);
 
   canvas.mousePressed(startPath);
   canvas.parent('canvascontainer');
@@ -27,12 +27,12 @@ function setup() {
 }
 
 function mouseDragged() {
-  if(millis() !== prem){
+  if (millis() !== prem) {
     diff = millis() - prem;
     // console.log(diff);
     prem = millis();
   }
-  if(diff < minDiff){
+  if (diff < minDiff) {
     minDiff = diff;
     console.log(minDiff);
   }
@@ -43,7 +43,7 @@ function mouseDragged() {
     x: mouseX,
     y: mouseY
   }
-  
+
   socket.emit('mouse', data);
 }
 
@@ -151,3 +151,8 @@ function showDrawing(key) {
 function clearDrawing() {
   drawing = [];
 }
+
+document.querySelector("#clear").onclick = () => {
+  drawing = [];
+  currentPath = [];
+};

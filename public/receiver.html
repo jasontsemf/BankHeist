@@ -36,7 +36,10 @@
             <p>Press ready when you're done</p>
             <button id="ready">Ready</button><br>
             <!-- if not ready signer cannot draw -->
-            <div id="canvascontainer" style="display: none;"></div>
+            <div id="signingarea"  style="display: none;">
+                <div id="canvascontainer"></div>
+                <button id="clear">clear</button>
+            </div>
         </div>
         <!-- <p>once the hashed data is obtained and decrypted with the key, on this page, call the "/move" api to control the
             node js app running in the background for sending serial to the axidraw</p>
