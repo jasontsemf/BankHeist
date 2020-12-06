@@ -105,17 +105,14 @@ e.get("/move/:sxy", async (req, res) => {
   x = temp[1];
   y = temp[2];
   if (port) {
-    if(s < 100 && (x > 0 && y > 0)){
-      let cmd = `XM,${s},${x},${y}\r`;
-      mainWindow.webContents.send('cmdWrite', cmd);
-      port.write(cmd, function (err) {
-        if (err) {
-          return console.log('Error on write: ', err.message)
-        }else{
-          console.log('message written', s, x, y);
-        }
-      });
-    }
+    let cmd = `XM,${s},${x},${y}\r`;
+    mainWindow.webContents.send('cmdWrite', cmd);
+    port.write(cmd, function (err) {
+      if (err) {
+        return console.log('Error on write: ', err.message)
+      }
+      console.log('message written', s, x, y);
+    });
   }
   res.send("OK");
 });

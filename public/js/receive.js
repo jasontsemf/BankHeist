@@ -1,3 +1,5 @@
+// const { write } = require("fs");
+
 var socket;
 var xarray = [];
 var xoutput = [];
@@ -43,17 +45,22 @@ function moveAxiDraw(data) {
   //   });
   //   start = false;
   // } else {
-    let url = `http://localhost:8081/move/${seconds[xarray.length-1]},${xoutput[xoutput.length - 1]*factor},${youtput[youtput.length - 1]*factor}`;
+
+  let writeS = seconds[xarray.length-1];
+  let writeX = xoutput[xoutput.length - 1]*factor;
+  let writeY = youtput[youtput.length - 1]*factor;
+  if(writeS < 500){
+    let url = `http://localhost:8081/move/${writeS},${writeX},${writeY}`;
     let response = fetch(url, {
       mode: 'no-cors'
     });
+  }
   // }
 }
 
-function draw() {
-}
+function draw() {}
 
-function drawCanvas(data){
+function drawCanvas(data) {
   fill(255);
   ellipse(data.x, data.y, 5, 5);
 }
