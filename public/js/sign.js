@@ -51,7 +51,12 @@ function startPath() {
   isDrawing = true;
   currentPath = [];
   drawing.push(currentPath);
-  socket.emit('mousedown', true);
+  var data = {
+    x: mouseX,
+    y: mouseY
+  }
+  socket.emit('mousedown', data);
+
 }
 
 function endPath() {

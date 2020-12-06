@@ -39,7 +39,7 @@ function moveAxiDraw(data) {
   // x = 0-24700
   // y = 0-17500
 
-  let writeS = seconds[xarray.length - 1];
+  let writeS = seconds[seconds.length - 1];
   let writeX = xoutput[xoutput.length - 1] * factor;
   let writeY = youtput[youtput.length - 1] * factor;
   if (writeS < 500) {
@@ -49,7 +49,43 @@ function moveAxiDraw(data) {
     });
   }
   // }
+  // }
 }
+
+socket.on('pendown', (res) => {
+  if (res) {
+      // console.log("pendown");
+      // console.log(res.x, res.y);
+      // console.log(xarray, yarray);
+      xarray.push(res.x);
+      yarray.push(res.y);
+      let url1 = `http://localhost:8081/down`;
+      let response = fetch(url1, {
+          mode: 'no-cors'
+      });
+      
+
+      // move to next start point
+      let writeS = 500;
+      let writeX = (res.x - xarray[xarray.length - 2]) * factor;
+      writeX = Math.floor(writeX);
+      let writeY = (res.y - yarray[yarray.length - 2]) * factor;
+      writeY = Math.floor(writeY);
+      let url2 = `http://localhost:8081/move/${writeS},${writeX},${writeY}`;
+      let response2 = fetch(url2, {
+          mode: 'no-cors'
+      });
+  }
+});
+
+socket.on('penup', (res) => {
+  if (res) {
+      let url = `http://localhost:8081/up`;
+      let response = fetch(url, {
+          mode: 'no-cors'
+      });
+  }
+});
 
 function draw() {}
 

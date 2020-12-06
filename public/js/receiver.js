@@ -46,20 +46,3 @@ socket.on('signer logged in', (res) => {
     }
 });
 
-socket.on('pendown', (res) => {
-    // if (res) {
-        let url = `http://localhost:8081/down`;
-        let response = fetch(url, {
-            mode: 'no-cors'
-        });
-    // }
-});
-
-socket.on('penup', (res) => {
-    if (res) {
-        let url = `http://localhost:8081/up`;
-        let response = fetch(url, {
-            mode: 'no-cors'
-        });
-    }
-});
