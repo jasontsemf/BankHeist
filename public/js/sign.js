@@ -12,8 +12,8 @@ function setup() {
   if (prem === 0){
     millisecond = millis();
   }
-  console.log("hello from my sendjs");
-  canvas = createCanvas(247, 175);
+  console.log("hello from my signjs");
+  canvas = createCanvas(247*2, 175*2);
 
   canvas.mousePressed(startPath);
   canvas.parent('canvascontainer');
@@ -43,6 +43,7 @@ function mouseDragged() {
     x: mouseX,
     y: mouseY
   }
+  
   socket.emit('mouse', data);
 }
 

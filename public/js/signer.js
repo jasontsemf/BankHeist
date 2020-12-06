@@ -29,28 +29,38 @@ document.querySelector("#joinroom").onclick = () => {
     socket.on('get cipher from server', onReceiveCipher);
 };
 
-document.querySelector("#test").onclick = () => {
-    console.log("test button pressed");
-    socket.emit("test", "hi");
-};
-
-socket.on('enter', (res) => console.log(res));
-socket.on('no room', (res) => console.log(res));
-socket.on('message', (res) => console.log(res));
-
 function onReceiveCipher(data){
     console.log(data);
     let ciphertext = data;
     // let logindata;
     bytes = CryptoJS.AES.decrypt(ciphertext, pw);
     originalText = bytes.toString(CryptoJS.enc.Utf8);
-
+    
     if (roomname === originalText) {
-        document.querySelector("#msg").textContent = "logging in";
         logindata = {room: roomname, cipher: ciphertext};
         socket.emit("signer login success", logindata);
+        document.querySelector("#msg").textContent = "login successful";
+        document.querySelector("#sign").style.display = "inline";
+        document.querySelector("#waiting_message").textContent = "waiting for your receiver's approval to start signing";
     }else{
         document.querySelector("#msg").textContent = "wrong pw, try again";
     }
 }
 
+socket.on('enter', (res) => console.log(res));
+socket.on('no room', (res) => console.log(res));
+socket.on('message', (res) => console.log(res));
+socket.on('receiver ready', (res) => {
+    if(res){
+        // display canvas
+        document.querySelector("#signingarea").style.display = "inline";
+        document.querySelector("#waiting_message").textContent = "receiver is ready, start signing below";
+    }
+});
+
+
+
+// document.querySelector("#test").onclick = () => {
+//     console.log("test button pressed");
+//     socket.emit("test", "hi");
+// };

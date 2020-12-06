@@ -13,8 +13,8 @@ var drawing = [];
 var currentPath = [];
 
 function setup() {
-  console.log("hello from receive p5 script");
-  canvas = createCanvas(247, 175);
+  console.log("hello from receivejs");
+  canvas = createCanvas(247*2, 175*2);
   canvas.parent('canvascontainer');
   // socket = io.connect();
   socket.on('mouse', moveAxiDraw);

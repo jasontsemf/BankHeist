@@ -16,22 +16,27 @@
 <body>
     <div id="receiverlogin">
         <h1>Create a signing meeting</h1>
-        <input type="text" id="fullname" placeholder="enter your legal name"><br>
+        <input type="text" id="fullname" placeholder="enter your legal name">
         <input type="email" id="email" placeholder="enter your email"><br>
         <input type="text" id="roomname" placeholder="enter room name">
         <input type="password" id="pw" placeholder="password"><br>
+        <br>
         <button id="createroom">create room</button>
-        <div id="cipher">the cipher</div>
+        <p id="msg">Create a room to invite your signer</p>
+        <div id="cipher" style="display: none">the cipher</div>
     </div>
-    <div id="receive">
+    <div id="receive" style="display: none">
         <p>The room is created. Invite and send the room details to the signer.</p>
-        <p>once the signer starts signing, the socket connection will send encrypted x and y data to the receiver who's
-            on this page</p>
-        <button id="ready">ready</button>
-        <div id="canvascontainer"></div>
-        <p>once the hased data is obtained and decrypted with the key, on this page, call the "/move" api to control the
+        <div id="signer_found" style="display: none;">
+            <p>Meanwhile, please set up your Axidraw and place it over the document for signature.</p>
+            <p>Press ready when you're done</p>
+            <button id="ready">Ready</button>
+            <!-- if not ready signer cannot draw -->
+            <div id="canvascontainer"></div>
+        </div>
+        <!-- <p>once the hashed data is obtained and decrypted with the key, on this page, call the "/move" api to control the
             node js app running in the background for sending serial to the axidraw</p>
-        <p>instruction to home machine</p>
+        <p>instruction to home machine</p> -->
     </div>
 </body>
 

@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const { emit } = require('process');
+const {
+    emit
+} = require('process');
 const app = express();
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
@@ -20,8 +22,8 @@ let users = [];
 let rooms = [];
 
 io.on('connection', socket => {
-    console.log(socket.id);
-    // receiver login
+    console.log(`${socket.id} has joined`);
+    // receiver logic
     socket.on("receiver login", (data) => {
         console.log("a receiver");
         // console.log(data);
@@ -42,9 +44,13 @@ io.on('connection', socket => {
 
         socket.join(room.room);
         io.in(room.room).emit('enter', `${user.fullname} has joined ${room.room}`);
-        // io.emit("new user", users);
+        socket.on('receiver ready', (data) => { 
+            console.log(`data is ${data}`);
+            io.in(room.room).emit('receiver ready', true);
+        });
     });
 
+    // singer logic
     socket.on("signer login", (data) => {
         // console.log(data);
         console.log("a signer");
@@ -57,25 +63,26 @@ io.on('connection', socket => {
         let room = {
             room: data.roomname
         }
+
         console.log(user);
         console.log(rooms);
 
         let cipher;
         let targetRoomName;
 
-        if(rooms.length > 0){
+        if (rooms.length > 0) {
             rooms.forEach(e => {
                 if (e.room === room.room) {
                     targetRoomName = e.room;
                     cipher = e.cipher;
                     console.log("room exist");
                     io.to(socket.id).emit("get cipher from server", cipher);
-                }else{
+                } else {
                     console.log("roon doesn't exist");
                     io.to(socket.id).emit('no room', "the room you're trying to conenct is not available yet");
                 }
             });
-        }else{
+        } else {
             console.log("roon doesn't exist");
             io.to(socket.id).emit('no room', "the room you're trying to conenct is not available yet");
         }
@@ -85,27 +92,30 @@ io.on('connection', socket => {
                 users.push(user);
                 socket.join(targetRoomName);
                 console.log(`${user.fullname} joined`);
-                io.in(targetRoomName).emit('enter', `${user.fullname} has joined ${targetRoomName}`);
+                // io.in(targetRoomName).emit('enter', `${user.fullname} has joined ${targetRoomName}`);
                 // io.to(targetRoomName).emit('enter', targetRoomName);
                 // io.sockets.in(targetRoomName).emit('message', 'what is going on, party people?');
+                io.in(targetRoomName).emit('signer logged in', true);
                 socket.on('mouse', (data) => {
                     io.in(targetRoomName).emit('mouse', data);
                 });
+
             }
         });
     });
 });
 
-io.sockets.on('connection', test);
-function test(socket){
-    console.log("running test");
-    socket.on("test", outputTest);
-}
-function outputTest(data){
-    console.log("running outputtest");
-    io.sockets.emit("message", "testing 123");
-}
 
+io.on("connection", (socket) => {
+    socket.on("disconnecting", (reason) => {
+        for (const room of socket.rooms) {
+            if (room !== socket.id) {
+                console.log(`user ${socket.id} has left ${room}`)
+                socket.to(room).emit(`user ${socket.id} has left ${room}`);
+            }
+        }
+    });
+});
 
 // io.sockets.on('connection', newConnection);
 

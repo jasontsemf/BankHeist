@@ -25,11 +25,24 @@ document.querySelector("#createroom").onclick = () => {
         cipher: cipher
     }
     socket.emit('receiver login', data);
+    document.querySelector('#msg').textContent = "login successful";
+    document.querySelector('#receive').style.display = "inline";
 };
+
+document.querySelector("#ready").onclick = () => {
+    // console.log("ready is clicked");
+    let ready = true;
+    socket.emit('receiver ready', ready);
+}
 
 socket.on('enter', (res) => console.log(res));
 
 socket.on('message', (res) => console.log(res));
 
-socket.on("hello", console.log(data));
+socket.on('signer logged in', (res) => {
+    if(res){
+        document.querySelector("#signer_found").style.display = "inline";
+    }
+});
+
 

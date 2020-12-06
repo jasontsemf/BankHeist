@@ -14,21 +14,23 @@
 <body>
     <div id="signerlogin">
         <h1>Join a signing meeting</h1>
-        <input type="text" id="fullname" placeholder="enter your legal name"><br>
+        <input type="text" id="fullname" placeholder="enter your legal name">
         <input type="email" id="email" placeholder="enter your email"><br>
         <input type="text" id="roomname" placeholder="enter room name">
         <input type="password" id="pw" placeholder="password"><br>
+        <br>
         <button id="joinroom">join room</button>
-        <div id="msg">the msg</div>
-        <button id="test">test</button>
+        <p id="msg">Login in with your the details given by your receiver</p>
+        <!-- <button id="test">test</button> -->
     </div>
-    <div id="sign">
-        <!-- <p>start a room by typing in room name and pw</p> -->
-        <p>if the receiver is not here, wait for the other side to be online</p>
-        <p>if ready, can start drawing, start button</p>
-        <div id ="canvascontainer"></div>
-        <button id="clear">clear</button>
-        <p>for every point of the stroke is detected, send xy values to the other side</p>    
+    <div id="sign" style="display: none;">
+        <p id="waiting_message">if the receiver is not here, wait for the other side to be online</p>
+        <!-- <p>receiver is ready, start signing</p> -->
+        <div id="signingarea" style="display: none">
+            <div id="canvascontainer"></div>
+            <button id="clear">clear</button>
+        </div>
+        <!-- <p>for every point of the stroke is detected, send xy values to the other side</p>     -->
     </div>
 </body>
 </html>
