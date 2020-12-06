@@ -33,6 +33,7 @@ document.querySelector("#ready").onclick = () => {
     // console.log("ready is clicked");
     let ready = true;
     socket.emit('receiver ready', ready);
+    document.querySelector("#canvascontainer").style.display = 'inline-block';
 }
 
 socket.on('enter', (res) => console.log(res));
@@ -40,9 +41,25 @@ socket.on('enter', (res) => console.log(res));
 socket.on('message', (res) => console.log(res));
 
 socket.on('signer logged in', (res) => {
-    if(res){
+    if (res) {
         document.querySelector("#signer_found").style.display = "inline";
     }
 });
 
+socket.on('pendown', (res) => {
+    // if (res) {
+        let url = `http://localhost:8081/down`;
+        let response = fetch(url, {
+            mode: 'no-cors'
+        });
+    // }
+});
 
+socket.on('penup', (res) => {
+    if (res) {
+        let url = `http://localhost:8081/up`;
+        let response = fetch(url, {
+            mode: 'no-cors'
+        });
+    }
+});

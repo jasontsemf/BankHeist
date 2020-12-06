@@ -51,10 +51,12 @@ function startPath() {
   isDrawing = true;
   currentPath = [];
   drawing.push(currentPath);
+  socket.emit('mousedown', true);
 }
 
 function endPath() {
   isDrawing = false;
+  socket.emit('mouseup', true);
 }
 
 function draw() {

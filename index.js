@@ -78,13 +78,13 @@ io.on('connection', socket => {
                     console.log("room exist");
                     io.to(socket.id).emit("get cipher from server", cipher);
                 } else {
-                    console.log("roon doesn't exist");
-                    io.to(socket.id).emit('no room', "the room you're trying to conenct is not available yet");
+                    console.log("room doesn't exist");
+                    io.to(socket.id).emit('no room', true);
                 }
             });
         } else {
-            console.log("roon doesn't exist");
-            io.to(socket.id).emit('no room', "the room you're trying to conenct is not available yet");
+            console.log("room, doesn't exist");
+            io.to(socket.id).emit('no room', true);
         }
 
         socket.on("signer login success", logindata => {
@@ -96,10 +96,17 @@ io.on('connection', socket => {
                 // io.to(targetRoomName).emit('enter', targetRoomName);
                 // io.sockets.in(targetRoomName).emit('message', 'what is going on, party people?');
                 io.in(targetRoomName).emit('signer logged in', true);
+                socket.on('mousedown', (data) => {
+                    console.log("pen down");
+                    io.in(targetRoomName).emit('pendown', data);
+                });
                 socket.on('mouse', (data) => {
                     io.in(targetRoomName).emit('mouse', data);
                 });
-
+                socket.on('mouseup', (data) => {
+                    console.log("pen up");
+                    io.in(targetRoomName).emit('penup', data);
+                });
             }
         });
     });

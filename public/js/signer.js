@@ -48,7 +48,11 @@ function onReceiveCipher(data){
 }
 
 socket.on('enter', (res) => console.log(res));
-socket.on('no room', (res) => console.log(res));
+socket.on('no room', (res) => {
+    if(res){
+        document.querySelector("#msg").textContent = `Room named "${roomname}" is not available yet, check your spellling.`;
+    }
+});
 socket.on('message', (res) => console.log(res));
 socket.on('receiver ready', (res) => {
     if(res){

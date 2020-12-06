@@ -14,7 +14,7 @@ var currentPath = [];
 
 function setup() {
   console.log("hello from receivejs");
-  canvas = createCanvas(247*2, 175*2);
+  canvas = createCanvas(247 * 2, 175 * 2);
   canvas.parent('canvascontainer');
   // socket = io.connect();
   socket.on('mouse', moveAxiDraw);
@@ -38,18 +38,11 @@ function moveAxiDraw(data) {
   //the array is the difference 
   // x = 0-24700
   // y = 0-17500
-  // if (start) {
-  //   let url = `http: //localhost:8081/move/100,${xarray[0]*100},${yarray[yarray[0]]*100}`;
-  //   let response = fetch(url, {
-  //     mode: 'no-cors'
-  //   });
-  //   start = false;
-  // } else {
 
-  let writeS = seconds[xarray.length-1];
-  let writeX = xoutput[xoutput.length - 1]*factor;
-  let writeY = youtput[youtput.length - 1]*factor;
-  if(writeS < 500){
+  let writeS = seconds[xarray.length - 1];
+  let writeX = xoutput[xoutput.length - 1] * factor;
+  let writeY = youtput[youtput.length - 1] * factor;
+  if (writeS < 500) {
     let url = `http://localhost:8081/move/${writeS},${writeX},${writeY}`;
     let response = fetch(url, {
       mode: 'no-cors'

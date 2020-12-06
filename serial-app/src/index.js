@@ -61,8 +61,7 @@ app.on('activate', () => {
 ipc.on('scan', (event, arg) => {
   console.log("on scan in server");
   console.log(aPorts);
-  scanPort();
-  event.reply('aPorts', aPorts);
+  scanPort(event);
 });
 
 ipc.on('connect', (event, arg) => {
@@ -73,15 +72,8 @@ ipc.on('connect', (event, arg) => {
 });
 
 ipc.on('sendCmd', (event, arg) => {
-  // port.write(arg, function (err) {
-  //   if (err) {
-  //     return console.log('Error on write: ', err.message)
-  //   }
-  //   console.log('message written', arg);
-  // });
   console.log("the arg: ", arg);
   if (port) {
-    mainWindow.webContents.send('cmdWrite', arg);
     port.write(arg, function (err) {
       if (err) {
         return console.log('Error on write: ', err.message)
@@ -92,7 +84,6 @@ ipc.on('sendCmd', (event, arg) => {
 });
 
 //XM,1000,1000,1000
-
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
@@ -117,13 +108,41 @@ e.get("/move/:sxy", async (req, res) => {
   res.send("OK");
 });
 
+e.get("/down", async (req, res) => {
+  if (port) {
+    let cmd = "SP,1\r";
+    mainWindow.webContents.send('cmdWrite', cmd);
+    port.write(cmd, function (err) {
+      if (err) {
+        return console.log('Error on write: ', err.message)
+      }
+      console.log('message written', cmd);
+    });
+  }
+  res.send("OK");
+});
+
+e.get("/up", async (req, res) => {
+  if (port) {
+    let cmd = "SP,0\r";
+    mainWindow.webContents.send('cmdWrite', cmd);
+    port.write(cmd, function (err) {
+      if (err) {
+        return console.log('Error on write: ', err.message)
+      }
+      console.log('message written', cmd);
+    });
+  }
+  res.send("OK");
+});
+
 e.listen(localhostPort, () => {
   console.log(`Server listening at http://localhost:${localhostPort}!`);
 
 });
 
 
-scanPort = ()=>{
+scanPort = (e)=>{
   SerialPort.list().then(function (ports) {
     // console.log(ports);
     aPorts = [];
@@ -132,9 +151,9 @@ scanPort = ()=>{
         aPorts.push(port.path);
       }
     });
+    e.reply('aPorts', aPorts);
     console.log(aPorts, "in the function");
-    if (callback) return;
   }).catch(function (error) {
-    if (callback) return;
+    console.log(error);
   });
 }
