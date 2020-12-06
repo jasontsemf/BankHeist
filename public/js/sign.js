@@ -39,6 +39,7 @@ function mouseDragged() {
   // console.log(millisecond = millis());
   // console.log(mouseX + ',' + mouseY);
   var data = {
+    s: diff,
     x: mouseX,
     y: mouseY
   }

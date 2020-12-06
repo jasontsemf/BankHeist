@@ -98,21 +98,23 @@ ipc.on('sendCmd', (event, arg) => {
 // code. You can also put them in separate files and import them here.
 
 // actual API calls
-e.get("/move/:xy", async (req, res) => {
-  let temp = req.params.xy.split(',');
+e.get("/move/:sxy", async (req, res) => {
+  let temp = req.params.sxy.split(',');
   console.log(temp);
-  x = temp[0];
-  y = temp[1];
-  let fr = 1000/30;
+  s = temp[0];
+  x = temp[1];
+  y = temp[2];
   if (port) {
-    let cmd = `XM,100,${x},${y}\r`;
-    mainWindow.webContents.send('cmdWrite', cmd);
-    port.write(cmd, function (err) {
-      if (err) {
-        return console.log('Error on write: ', err.message)
-      }
-      console.log('message written', x, y);
-    });
+    if(s < 100 && x && y){
+      let cmd = `XM,${s},${x},${y}\r`;
+      mainWindow.webContents.send('cmdWrite', cmd);
+      port.write(cmd, function (err) {
+        if (err) {
+          return console.log('Error on write: ', err.message)
+        }
+        console.log('message written', s, x, y);
+      });
+    }
   }
   res.send("OK");
 });
