@@ -26,7 +26,8 @@ io.on('connection', socket => {
     // receiver logic
     socket.on("receiver login", (data) => {
         console.log("a receiver");
-        // console.log(data);
+
+        //users and room management
         const user = {
             fullname: data.fullname,
             email: data.email,
@@ -37,13 +38,16 @@ io.on('connection', socket => {
             room: data.roomname,
             cipher: data.cipher
         }
-        console.log(user);
-        console.log(rooms);
+        // console.log(user);
+        // console.log(rooms);
         users.push(user);
         rooms.push(room);
 
+        // join room
         socket.join(room.room);
         io.in(room.room).emit('enter', `${user.fullname} has joined ${room.room}`);
+        
+        // ready to let the signer sign
         socket.on('receiver ready', (data) => { 
             console.log(`data is ${data}`);
             io.in(room.room).emit('receiver ready', true);
@@ -93,7 +97,6 @@ io.on('connection', socket => {
                 socket.join(targetRoomName);
                 console.log(`${user.fullname} joined`);
                 // io.in(targetRoomName).emit('enter', `${user.fullname} has joined ${targetRoomName}`);
-                // io.to(targetRoomName).emit('enter', targetRoomName);
                 // io.sockets.in(targetRoomName).emit('message', 'what is going on, party people?');
                 io.in(targetRoomName).emit('signer logged in', true);
                 socket.on('mousedown', (data) => {
@@ -124,19 +127,6 @@ io.on("connection", (socket) => {
     });
 });
 
-// io.sockets.on('connection', newConnection);
-
-// function newConnection(socket) {
-//     console.log('new connection: ' + socket.id);
-//     console.log(socket);
-//     socket.on('mouse', mouseMsg);
-// }
-
-// function mouseMsg(data) {
-//     // socket.broadcast.emit('mouse', data);
-//     io.sockets.emit('mouse', data);
-//     console.log(data);
-// }
 
 // to static pages
 app.get("/", (req, res) => {
@@ -156,37 +146,20 @@ app.get("/draw", (req, res) => {
     res.sendFile(path.join(__dirname, "public/draw.html"));
 });
 
-// app.get("/sign", (req, res) => {
-//     res.sendFile(path.join(__dirname, "public/sign.html"));
-// });
+// io.sockets.on('connection', newConnection);
 
-// app.get("/receive", (req, res) => {
-//     res.sendFile(path.join(__dirname, "public/receive.html"));
-// });
+// function newConnection(socket) {
+//     console.log('new connection: ' + socket.id);
+//     console.log(socket);
+//     socket.on('mouse', mouseMsg);
+// }
 
-// app.get("/signerlogin", (req, res) => {
-//     res.sendFile(path.join(__dirname, "public/signerlogin.html"));
-// });
-
-// app.get("/receiverlogin", (req, res) => {
-//     res.sendFile(path.join(__dirname, "public/receiverlogin.html"));
-// });
-
-
-// // actual API calls
-// app.get("/move/:xy", async (req, res) => {
-//     let temp = req.params.xy.split(',');
-//     console.log(temp);
-//     x = temp[0];
-//     y = temp[1];
-//     port.write(`XM,1000,${x},${y}\r`, function (err) {
-//         if (err) {
-//             return console.log('Error on write: ', err.message)
-//         }
-//         console.log('message written', x,y);
-//     })
-// });
+// function mouseMsg(data) {
+//     // socket.broadcast.emit('mouse', data);
+//     io.sockets.emit('mouse', data);
+//     console.log(data);
+// }
 
 // app.listen(PORT, () => {
-//     console.log("Server listening at http://localhost:8080!")
+    //     console.log("Server listening at http://localhost:8080!")
 // });

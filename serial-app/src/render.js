@@ -8,6 +8,8 @@ const select = document.getElementById('select');
 const msg = document.getElementById('msg');
 const textArea = document.getElementById('command');
 const sendBtn = document.getElementById('send');
+const penUpBtn = document.getElementById('pen up');
+const penDownBtn = document.getElementById('pen down');
 const ins = document.getElementById('ins');
 let aPorts = [];
 
@@ -26,6 +28,14 @@ connectBtn.onclick = () => {
 sendBtn.onclick = () => {
     console.log("send button clicked");
     ipc.send('sendCmd', textArea.value);
+};
+
+penDownBtn.onclick = async () => {
+    ipc.send('penDown', true);
+};
+
+penUpBtn.onclick = async () => {
+    ipc.send('penUp', true);
 };
 
 ipc.on('aPorts', (event, arg) => {

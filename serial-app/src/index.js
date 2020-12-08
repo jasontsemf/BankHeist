@@ -83,6 +83,32 @@ ipc.on('sendCmd', (event, arg) => {
   }
 });
 
+ipc.on('penUp', (event, arg) => {
+  if (port) {
+    let cmd = "SP,0\r";
+    mainWindow.webContents.send('cmdWrite', cmd);
+    port.write(cmd, function (err) {
+      if (err) {
+        return console.log('Error on write: ', err.message)
+      }
+      console.log('message written', cmd);
+    });
+  }
+});
+
+ipc.on('penDown', (event, arg) => {
+  if (port) {
+    let cmd = "SP,1\r";
+    mainWindow.webContents.send('cmdWrite', cmd);
+    port.write(cmd, function (err) {
+      if (err) {
+        return console.log('Error on write: ', err.message)
+      }
+      console.log('message written', cmd);
+    });
+  }
+});
+
 //XM,1000,1000,1000
 
 // In this file you can include the rest of your app's specific main process
