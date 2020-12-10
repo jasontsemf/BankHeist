@@ -29,6 +29,8 @@ document.querySelector("#joinroom").onclick = () => {
     socket.on('get cipher from server', onReceiveCipher);
 };
 
+
+
 function onReceiveCipher(data){
     console.log(data);
     let ciphertext = data;

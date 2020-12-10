@@ -57,6 +57,7 @@ io.on('connection', socket => {
     // singer logic
     socket.on("signer login", (data) => {
         // console.log(data);
+        // user management
         console.log("a signer");
         const user = {
             fullname: data.fullname,
@@ -67,19 +68,21 @@ io.on('connection', socket => {
         let room = {
             room: data.roomname
         }
-
         console.log(user);
         console.log(rooms);
-
+        
+        // login management
         let cipher;
         let targetRoomName;
 
+        // find if the room the signer is looking for exists
         if (rooms.length > 0) {
             rooms.forEach(e => {
                 if (e.room === room.room) {
                     targetRoomName = e.room;
                     cipher = e.cipher;
                     console.log("room exist");
+                    // send cipher to the signer for decrypting
                     io.to(socket.id).emit("get cipher from server", cipher);
                 } else {
                     console.log("room doesn't exist");
@@ -91,6 +94,7 @@ io.on('connection', socket => {
             io.to(socket.id).emit('no room', true);
         }
 
+        // decryption success from the signer, allow signer to join the room
         socket.on("signer login success", logindata => {
             if (logindata.room === targetRoomName && logindata.cipher === cipher) {
                 users.push(user);
@@ -99,6 +103,8 @@ io.on('connection', socket => {
                 // io.in(targetRoomName).emit('enter', `${user.fullname} has joined ${targetRoomName}`);
                 // io.sockets.in(targetRoomName).emit('message', 'what is going on, party people?');
                 io.in(targetRoomName).emit('signer logged in', true);
+
+                // forward mouse activity from signer to receiver
                 socket.on('mousedown', (data) => {
                     console.log("pen down");
                     io.in(targetRoomName).emit('pendown', data);
