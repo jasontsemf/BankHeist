@@ -153,9 +153,123 @@ function moveAxiDraw(data) {
 }
 ```
 
-### Crypto
+### Crypto and Security
 
 As recommended by the `Crypto.js` library, I am using AES as the encryption protocol. AES is The Advanced Encryption Standard (AES) is a U.S. Federal Information Processing Standard (FIPS). It was selected after a 5-year process where 15 competing designs were evaluated. It is essentially a symmetric encryption method, where the encryption side and the decryption side use the same key to en/decrypt the cipher.
+
+As a secure environment is key to a signature's validity, it is worth taking the time to develop a login system and to encrypt data. And this is relatively the most lengthy part in the code.
+
+The login handshake goes like this:
+
+1. Receiver created room with the `roomname` and `key`
+2. `Cipher` is created and sent to the server along with the `roomname`, no `key`/`password` is being sent through the internet, which is more secure
+3. The receiver tell the signer the password verbally (ideally)
+4. The signer enter the `roomname` and `key` to join the corresponding room
+5. The `roomname` is being sent to the server to match the corresponding cipher
+6. `Cipher` is sent to the signer
+7. `Cipher` is being decrypted with the key the signer entered
+8. If the encrypted message equals to `roomname`, allow the user to join the room 
+
+``` js
+io.on('connection', socket => {
+    console.log(`${socket.id} has joined`);
+    // receiver logic
+    socket.on("receiver login", (data) => {
+        console.log("a receiver");
+
+        //users and room management
+        const user = {
+            fullname: data.fullname,
+            email: data.email,
+            id: socket.id
+        };
+        socket.nickname = user.fullname;
+        const room = {
+            room: data.roomname,
+            cipher: data.cipher
+        }
+        // console.log(user);
+        // console.log(rooms);
+        users.push(user);
+        rooms.push(room);
+
+        // join room
+        socket.join(room.room);
+        io.in(room.room).emit('enter', `${user.fullname} has joined ${room.room}`);
+        
+        // ready to let the signer sign
+        socket.on('receiver ready', (data) => { 
+            console.log(`data is ${data}`);
+            io.in(room.room).emit('receiver ready', true);
+        });
+    });
+
+    // singer logic
+    socket.on("signer login", (data) => {
+        // console.log(data);
+        // user management
+        console.log("a signer");
+        const user = {
+            fullname: data.fullname,
+            email: data.email,
+            id: socket.id
+        };
+        socket.nickname = user.fullname;
+        let room = {
+            room: data.roomname
+        }
+        console.log(user);
+        console.log(rooms);
+        
+        // login management
+        let cipher;
+        let targetRoomName;
+
+        // find if the room the signer is looking for exists
+        if (rooms.length > 0) {
+            rooms.forEach(e => {
+                if (e.room === room.room) {
+                    targetRoomName = e.room;
+                    cipher = e.cipher;
+                    console.log("room exist");
+                    // send cipher to the signer for decrypting
+                    io.to(socket.id).emit("get cipher from server", cipher);
+                } else {
+                    console.log("room doesn't exist");
+                    io.to(socket.id).emit('no room', true);
+                }
+            });
+        } else {
+            console.log("room, doesn't exist");
+            io.to(socket.id).emit('no room', true);
+        }
+
+        // decryption success from the signer, allow signer to join the room
+        socket.on("signer login success", logindata => {
+            if (logindata.room === targetRoomName && logindata.cipher === cipher) {
+                users.push(user);
+                socket.join(targetRoomName);
+                console.log(`${user.fullname} joined`);
+                io.in(targetRoomName).emit('signer logged in', true);
+
+                // forward mouse activity from signer to receiver
+                socket.on('mousedown', (data) => {
+                    console.log("pen down");
+                    io.in(targetRoomName).emit('pendown', data);
+                });
+                socket.on('mouse', (data) => {
+                    io.in(targetRoomName).emit('mouse', data);
+                });
+                socket.on('mouseup', (data) => {
+                    console.log("pen up");
+                    io.in(targetRoomName).emit('penup', data);
+                });
+            }
+        });
+    });
+});
+
+```
 
 ## Considering User Needs
 
