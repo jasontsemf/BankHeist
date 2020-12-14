@@ -7,6 +7,7 @@ Live on [Heroku](https://bank--heist.herokuapp.com/)!
 ![bankheist](doc/main.jpg)
 
 Demo on [YouTube](http://www.youtube.com/watch?v=6OJlWO6G2lc)
+
 [![BankHeist](http://img.youtube.com/vi/6OJlWO6G2lc/0.jpg)](http://www.youtube.com/watch?v=6OJlWO6G2lc "Demo on YouTube")
 
 Link to [Presentation Deck](https://docs.google.com/presentation/d/10jLiQrcMQCuyAEuc270NFHGXWnt4NvPkelLd_Dbk4I4/edit?usp=sharing)
