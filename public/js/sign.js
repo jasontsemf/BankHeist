@@ -65,7 +65,7 @@ function endPath() {
 }
 
 function draw() {
-  background(0);
+  background(255);
 
   if (isDrawing) {
     var point = {
@@ -75,7 +75,7 @@ function draw() {
     currentPath.push(point);
   }
 
-  stroke(255);
+  stroke(0);
   strokeWeight(4);
   noFill();
   for (var i = 0; i < drawing.length; i++) {

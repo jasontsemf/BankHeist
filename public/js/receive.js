@@ -19,7 +19,7 @@ function setup() {
   // socket = io.connect();
   socket.on('mouse', moveAxiDraw);
   socket.on('mouse', drawCanvas);
-  background(0);
+  background(255);
 }
 
 function moveAxiDraw(data) {
@@ -90,7 +90,7 @@ socket.on('penup', (res) => {
 function draw() {}
 
 function drawCanvas(data) {
-  fill(255);
+  fill(0);
   ellipse(data.x, data.y, 5, 5);
 }
 

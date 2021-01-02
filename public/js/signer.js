@@ -43,7 +43,7 @@ function onReceiveCipher(data){
         socket.emit("signer login success", logindata);
         document.querySelector("#msg").textContent = "login successful";
         document.querySelector("#sign").style.display = "inline";
-        document.querySelector("#waiting_message").textContent = "waiting for your receiver's approval to start signing";
+        document.querySelector("#waiting_message").textContent = "Waiting for your receiver's approval to start signing.";
     }else{
         document.querySelector("#msg").textContent = "wrong pw, try again";
     }
@@ -60,7 +60,8 @@ socket.on('receiver ready', (res) => {
     if(res){
         // display canvas
         document.querySelector("#signingarea").style.display = "inline";
-        document.querySelector("#waiting_message").textContent = "receiver is ready, start signing below";
+        document.querySelector("#waiting_message").textContent = "Receiver is ready. Start signing below";
+        document.querySelector("#waiting_message").className = "notification is-success";
     }
 });
 

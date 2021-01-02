@@ -34,6 +34,7 @@ document.querySelector("#ready").onclick = () => {
     let ready = true;
     socket.emit('receiver ready', ready);
     document.querySelector("#signingarea").style.display = 'inline-block';
+    document.querySelector("#ready_message").style.display = 'none';
 }
 
 socket.on('enter', (res) => console.log(res));
@@ -42,6 +43,7 @@ socket.on('message', (res) => console.log(res));
 
 socket.on('signer logged in', (res) => {
     if (res) {
+        document.querySelector("#waiting_message").style.display = "none";
         document.querySelector("#signer_found").style.display = "inline";
     }
 });
