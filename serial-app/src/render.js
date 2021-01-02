@@ -11,6 +11,7 @@ const sendBtn = document.getElementById('send');
 const penUpBtn = document.getElementById('pen up');
 const penDownBtn = document.getElementById('pen down');
 const ins = document.getElementById('ins');
+const noti = document.getElementById('noti');
 let aPorts = [];
 
 scanBtn.onclick = () => {
@@ -56,6 +57,7 @@ ipc.on('portConnected', (event, arg) => {
     console.log("connected");
     msg.textContent = "You are connected";
     ins.style.display = "inline";
+    noti.className = "notification is-success";
 });
 
 ipc.on('cmdWrite', (event, arg) => {
