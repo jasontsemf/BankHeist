@@ -1,5 +1,11 @@
 console.log("hello from the signer script");
 
+function preventBehavior(e) {
+    e.preventDefault(); 
+};
+
+document.addEventListener("touchmove", preventBehavior, {passive: false});
+
 var socket;
 let fullname = "";
 let email = "";

@@ -95,5 +95,5 @@ function drawCanvas(data) {
 }
 
 document.querySelector("#clear").onclick = () => {
-  background(0);
+  background(255);
 };
