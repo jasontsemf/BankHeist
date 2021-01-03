@@ -1,6 +1,6 @@
 # 💸 BankHeist
 
-> Pulling off a "Bank Heist remotely by signing in real-time"
+> Pulling off a "Bank Heist" remotely by signing in real-time
 
 Live on [Heroku](https://bank--heist.herokuapp.com/)!
 
