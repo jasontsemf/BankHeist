@@ -4,11 +4,13 @@
 
 Live on [Heroku](https://bank--heist.herokuapp.com/)!
 
-![bankheist](doc/main.jpg)
+![bankheist](doc/thumb.png)
 
-Demo on [YouTube](http://www.youtube.com/watch?v=6OJlWO6G2lc)
+Demo on [YouTube](http://www.youtube.com/watch?v=wwdG1mgFPkc)
 
-[![BankHeist](http://img.youtube.com/vi/6OJlWO6G2lc/0.jpg)](http://www.youtube.com/watch?v=6OJlWO6G2lc "Demo on YouTube")
+[![BankHeistYouTube](http://img.youtube.com/vi/wwdG1mgFPkc/0.jpg)](http://www.youtube.com/watch?v=wwdG1mgFPkc "BankHeistYouTube")
+
+Link to [Design Portfolio](https://jasontsemf.github.io/bankheist.html) for more information
 
 Link to [Presentation Deck](https://docs.google.com/presentation/d/10jLiQrcMQCuyAEuc270NFHGXWnt4NvPkelLd_Dbk4I4/edit?usp=sharing)
 
