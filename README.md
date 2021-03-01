@@ -52,6 +52,8 @@ Utilizing the Arduino Serial Monitor, it was relatively straight forward to cont
 
 ### Build New Serial App
 
+[Download here](https://github.com/jasontsemf/BankHeist/releases/tag/v0.0-alpha)
+
 ![serialapp](doc/serialapp.png)
 
 It is such a shame that the `P5 SerialControl` app didn't work as intended. I would suspect that the reason why I am not able to get the AxiDraw to work with the `p5 SerialControl` is the `\r` carriage return is not being sent to the machine, and this is necessary for the machine to detect the command. So I gave up on the app, and decided to write my very own serial app.
